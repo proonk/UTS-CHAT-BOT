@@ -3,3 +3,5 @@ This is a University of Technology Sarawak website. This is for who does not kno
 Before run this file, you need to pip install all thing, for example: pip install flask
 
 this is a flask server , you need to run the server first then you can get the respone from ai(gemini ai)
+
+Replace all the "YOUR_API_KEY" with your own api key form gemini, you can get it from google ai studio.
