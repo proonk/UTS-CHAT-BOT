@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI</title>
+    <link rel="stylesheet" href="/static/css/chat_bot.css">
+    <style>
+        /* Styles for the loading animation */
+        .chat-container {
+            position: relative;
+            max-width: 800px; /* Set max width for better readability on larger screens */
+            margin: auto; /* Center the container */
+            padding: 0 10px; /* Add some padding to the sides */
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .loading-gif {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+        }
+
+        /* Styles for user and AI messages */
+        .user-message {
+            background-color: #ddeeff; /* 设置用户消息的背景颜色 */
+        }
+
+        .ai-message {
+            background-color: #e5ffe5; /* 设置 AI 消息的背景颜色 */
+        }
+
+        .message {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .chat-container {
+                max-width: 100%; /* Adjust max width for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="/static/img/uts logo.png" alt="Logo" img>
+    </header>
+    <main>
+        <div id="chat-container" class="chat-container">
+            
+        </div>
+       
+        <div class="loading-overlay" id="loading-overlay">
+            <img class="loading-gif" src="/static/img/loading.gif" alt="Loading...">
+        </div>
+    </main>
+    <footer>
+        <div class="user-input">
+            <input id="user-message" type="text" placeholder="Enter word...">
+            <button id="send-button">Send</button>
+        </div>
+    </footer>
+
+    <script>
+
+        
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const userMessageInput = document.getElementById('user-message');
+            const sendButton = document.getElementById('send-button');
+            const chatContainer = document.getElementById('chat-container');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            async function sendMessage() {
+                const userMessage = userMessageInput.value.trim(); 
+                if (userMessage !== '') {
+                    displayMessage('You', userMessage, true); 
+
+                    
+                    loadingOverlay.style.display = 'flex'; 
+
+                    
+                    fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ input: userMessage })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const aiResponse = data.response.response.candidates[0].content.parts[0].text; 
+                        displayMessageWithTypingAnimation('AI', aiResponse); 
+
+                        loadingOverlay.style.display = 'none'; 
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                    userMessageInput.value = ''; 
+                }
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+
+            userMessageInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            function displayMessage(sender, message, isUserMessage) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                if (isUserMessage) {
+                    messageElement.classList.add('user-message'); 
+                } else {
+                    messageElement.classList.add('ai-message'); 
+                }
+                messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            async function displayMessageWithTypingAnimation(sender, message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add('ai-message'); 
+                chatContainer.appendChild(messageElement);
+
+                const senderElement = document.createElement('strong');
+                senderElement.textContent = sender + ': ';
+                messageElement.appendChild(senderElement);
+
+                const textElement = document.createElement('span');
+                messageElement.appendChild(textElement);
+
+                for (let i = 0; i < message.length; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 1));
+                    textElement.textContent += message.charAt(i);
+                }
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
