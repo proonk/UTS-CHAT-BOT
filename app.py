@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
-api_key = os.environ.get("AIzaSyBkDM42BKsMd0BBFreeg2fa4zMsiC2gCX0")
+api_key = os.environ.get("YOUR_API_KEY")
 
 from google.generativeai import GenerativeModel
 import google.generativeai as genai
@@ -21,7 +21,7 @@ def index():
 
 def get_ai_service_response(user_message: str) -> dict:
     """Get AI response from external service"""
-    ai_service_endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyBkDM42BKsMd0BBFreeg2fa4zMsiC2gCX0"
+    ai_service_endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=YOUR_API_KEY"
     test = {
                 "contents": [
             {
