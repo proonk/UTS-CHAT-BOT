@@ -6,12 +6,11 @@
     <title>Chat with AI</title>
     <link rel="stylesheet" href="/static/css/chat_bot.css">
     <style>
-        /* Styles for the loading animation */
         .chat-container {
             position: relative;
-            max-width: 800px; /* Set max width for better readability on larger screens */
-            margin: auto; /* Center the container */
-            padding: 0 10px; /* Add some padding to the sides */
+            max-width: 800px; 
+            margin: auto; 
+            padding: 0 10px; 
         }
 
         .loading-overlay {
@@ -19,26 +18,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            display: none; /* Initially hidden */
+            display: none; 
             justify-content: center;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            background-color: rgba(255, 255, 255, 0.8); 
             padding: 20px;
             border-radius: 8px;
         }
 
         .loading-gif {
-            width: 50px; /* Adjust size as needed */
+            width: 50px;
             height: auto;
         }
 
-        /* Styles for user and AI messages */
         .user-message {
-            background-color: #ddeeff; /* 设置用户消息的背景颜色 */
+            background-color: #ddeeff; 
         }
 
         .ai-message {
-            background-color: #e5ffe5; /* 设置 AI 消息的背景颜色 */
+            background-color: #e5ffe5; 
         }
 
         .message {
@@ -47,10 +45,10 @@
             border-radius: 8px;
         }
 
-        /* Responsive styles */
+        
         @media screen and (max-width: 768px) {
             .chat-container {
-                max-width: 100%; /* Adjust max width for smaller screens */
+                max-width: 100%; 
             }
         }
     </style>
@@ -79,7 +77,7 @@
 
         
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function() { //Object//
             const userMessageInput = document.getElementById('user-message');
             const sendButton = document.getElementById('send-button');
             const chatContainer = document.getElementById('chat-container');
@@ -124,7 +122,7 @@
                 }
             });
 
-            function displayMessage(sender, message, isUserMessage) {
+            function displayMessage(sender, message, isUserMessage) { //polymorphism//
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message');
                 if (isUserMessage) {
