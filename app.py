@@ -163,7 +163,7 @@ def get_ai_service_response(user_message: str) -> dict:
         ]
     }
     
-    try:
+    try: //Exception Handling//
         response = requests.post(ai_service_endpoint, json=test)
         response.raise_for_status()  
         return {'response': response.json()}
